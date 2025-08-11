@@ -19,7 +19,7 @@ const paths = {
 		images: 'src/images/**/*',
 		fonts: 'src/fonts/**/*'
 	},
-	dist: 'dist',
+	dist: 'docs',
 	watch: 'src/**/*'
 };
 
