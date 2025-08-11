@@ -1,3 +1,7 @@
+## Github pages
+
+https://kras174.github.io/dating-landing-page/
+
 ## Installation
 
 1. Clone the repository:

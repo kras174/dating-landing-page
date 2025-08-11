@@ -1,19 +1,19 @@
-$primary-color: linear-gradient(238.08deg, #D4208C 0.42%, #E61726 82.5%);
-$text-color: #3A3A3A;
+$primary-color: linear-gradient(238.08deg, #d4208c 0.42%, #e61726 82.5%);
+$text-color: #3a3a3a;
 $background-color: white;
 
 @mixin gradient-text($gradient) {
-  background: $gradient;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  color: transparent;
+	background: $gradient;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-clip: text;
+	color: transparent;
 }
 
 .gradient-text {
-  &--primary {
-    @include gradient-text($primary-color);
-  }
+	&--primary {
+		@include gradient-text($primary-color);
+	}
 }
 
 $mobile: 576px;
@@ -22,28 +22,28 @@ $desktop: 1024px;
 $large-desktop: 1200px;
 
 @mixin mobile {
-  @media (max-width: #{$mobile}) {
-    @content;
-  }
+	@media (max-width: #{$mobile}) {
+		@content;
+	}
 }
 
 @mixin tablet {
-  @media (max-width: #{$tablet}) {
-    @content;
-  }
+	@media (max-width: #{$tablet}) {
+		@content;
+	}
 }
 
 @mixin desktop {
-  @media (max-width: #{$desktop}) {
-    @content;
-  }
+	@media (max-width: #{$desktop}) {
+		@content;
+	}
 }
 
 body {
-  font-family: 'Open Sans', sans-serif;
+	font-family: "Open Sans", sans-serif;
 	font-size: 17px;
-  color: $text-color;
-  background-color: $background-color;
+	color: $text-color;
+	background-color: $background-color;
 }
 
 .container {
@@ -58,13 +58,13 @@ body {
 		padding: 15px 24px;
 	}
 
-  @include tablet {
-    padding: 24px 15px;
+	@include tablet {
+		padding: 24px 15px;
 		flex-direction: column;
 		justify-content: start;
 		align-items: start;
 		gap: 20px;
-  }
+	}
 
 	@include mobile {
 		padding: 10px;
@@ -72,11 +72,11 @@ body {
 		justify-content: start;
 	}
 
-	&-image {
+	&__image {
 		img {
-			width: 100%;
-			height: 100%;
-			object-fit: cover;
+			max-width: 100%;
+			height: auto;
+			object-fit: contain;
 		}
 	}
 
@@ -151,15 +151,15 @@ body {
 
 .btn {
 	box-sizing: border-box;
-  padding: 12px 24px;
-  border: none;
-  border-radius: 8px;
+	padding: 12px 24px;
+	border: none;
+	border-radius: 8px;
 	font-size: 23px;
-  font-weight: 800;
-  text-decoration: none;
+	font-weight: 800;
+	text-decoration: none;
 	text-transform: uppercase;
-  cursor: pointer;
-  transition: all 0.3s ease;
+	cursor: pointer;
+	transition: all 0.3s ease;
 	min-height: 81px;
 	max-width: 387px;
 	width: 100%;
@@ -176,83 +176,88 @@ body {
 		max-width: 168px;
 	}
 
-  &--primary {
-    background: $primary-color;
-    color: white;
+	&--primary {
+		background: $primary-color;
+		color: white;
 
-    &:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(212, 32, 140, 0.3);
-    }
-  }
+		&:hover {
+			transform: translateY(-2px);
+			box-shadow: 0 8px 25px rgba(212, 32, 140, 0.3);
+		}
+	}
 
-  &--full {
+	&--full {
 		max-width: 100%;
-  }
+	}
 }
 
 .modal {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1000;
+	display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 1000;
 
-  &.active {
-    display: block;
-  }
+	&.active {
+		display: block;
+	}
 
-  &__overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(255, 255, 255, 0.8);
-		backdrop-filter: blur(15px)
-  }
+	&__overlay {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background: rgba(255, 255, 255, 0.8);
+		backdrop-filter: blur(15px);
+	}
 
-  &__content {
-    position: relative;
-    background: white;
-    margin: 50px auto;
-    padding: 45px;
-    border-radius: 50px;
-    max-width: 1200px;
-    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+	&__content {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		background: white;
+		padding: 45px;
+		border-radius: 50px;
+		max-width: 1200px;
+		width: 90%;
+		box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
 
 		@include desktop {
-			margin: 50px 20px;
+			width: 80%;
+			max-width: none;
 		}
 
 		@include mobile {
 			padding: 72px 15px;
 			border-radius: 20px;
+			width: 80%;
 		}
-  }
+	}
 
-  &__close {
-    position: absolute;
-    top: 15px;
-    right: 20px;
-    background: none;
-    border: none;
-    font-size: 45px;
-    cursor: pointer;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
+	&__close {
+		position: absolute;
+		top: 15px;
+		right: 20px;
+		background: none;
+		border: none;
+		font-size: 45px;
+		cursor: pointer;
+		width: 40px;
+		height: 40px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		transition: all 0.3s ease;
 
 		@include gradient-text($primary-color);
 
-    &:hover {
-      transform: scale(1.1);
-    }
+		&:hover {
+			transform: scale(1.1);
+		}
 
 		@include mobile {
 			top: 10px;
@@ -260,16 +265,16 @@ body {
 			width: 30px;
 			height: 30px;
 		}
-  }
+	}
 
-  &__header {
-    text-align: center;
-    margin-bottom: 30px;
+	&__header {
+		text-align: center;
+		margin-bottom: 30px;
 
-    .modal__title {
-      font-size: 24px;
+		.modal__title {
+			font-size: 24px;
 			font-weight: 700;
-      margin-bottom: 30px;
+			margin-bottom: 30px;
 
 			@include desktop {
 				font-size: 22px;
@@ -282,8 +287,8 @@ body {
 			@include mobile {
 				font-size: 17px;
 			}
-    }
-  }
+		}
+	}
 }
 
 .signup-form {
@@ -292,22 +297,22 @@ body {
 	align-items: center;
 	gap: 20px;
 
-  .form__group {
+	.form__group {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		gap: 10px;
 		width: 100%;
 
-    .form__input {
+		.form__input {
 			box-sizing: border-box;
-      width: 100%;
-      padding: 12px;
+			width: 100%;
+			padding: 12px;
 			border: none;
-      border-bottom: 1px solid rgba(58, 58, 58, 1);
-      font-size: 18px;
+			border-bottom: 1px solid rgba(58, 58, 58, 1);
+			font-size: 18px;
 			font-weight: 400;
-      transition: border-color 0.3s ease;
+			transition: border-color 0.3s ease;
 			outline: none;
 
 			&::placeholder {
@@ -319,37 +324,37 @@ body {
 				font-size: 14px;
 			}
 
-      &:focus {
-        outline: none;
+			&:focus {
+				outline: none;
 				border: none;
 				border-bottom: 1px solid rgba(58, 58, 58, 1);
-      }
+			}
 
-      &.error {
+			&.error {
 				outline: none;
 				border: none;
 				border-bottom: 1px solid #e74c3c;
-      }
-    }
+			}
+		}
 
-    .form__error {
-      color: #e74c3c;
-      font-size: 14px;
-      margin-top: 5px;
-      min-height: 20px;
-    }
-  }
+		.form__error {
+			color: #e74c3c;
+			font-size: 14px;
+			margin-top: 5px;
+			min-height: 20px;
+		}
+	}
 }
 
 .success-message {
-  display: none;
-  text-align: center;
-  padding: 20px;
+	display: none;
+	text-align: center;
+	padding: 20px;
 
-  .success__title {
-    font-size: 77px;
-    margin-bottom: 20px;
-    @include gradient-text($primary-color);
+	.success__title {
+		font-size: 77px;
+		margin-bottom: 20px;
+		@include gradient-text($primary-color);
 
 		@include desktop {
 			font-size: 60px;
@@ -362,10 +367,10 @@ body {
 		@include mobile {
 			font-size: 35px;
 		}
-  }
+	}
 
-  .success__text {
-    color: rgba(58, 58, 58, 1);
+	.success__text {
+		color: rgba(58, 58, 58, 1);
 		font-size: 28px;
 		font-weight: 700;
 
@@ -380,5 +385,5 @@ body {
 		@include mobile {
 			font-size: 14px;
 		}
-  }
+	}
 }
