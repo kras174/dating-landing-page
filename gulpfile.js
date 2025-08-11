@@ -85,20 +85,6 @@ function updateHtmlReferences() {
 				}
 			);
 
-			// Обновляем ссылки на изображения
-			content = content.replace(
-				/src="images\/([^"]+)"/g,
-				(match, filename) => {
-					// Ищем хэшированное имя для изображения
-					const hashedName = fileManifest[filename];
-					if (hashedName) {
-						return `src="images/${hashedName}"`;
-					}
-					// Если не найдено, оставляем как есть
-					return match;
-				}
-			);
-
 			file.contents = Buffer.from(content);
 		}
 		cb(null, file);
@@ -145,12 +131,10 @@ function images() {
 	// Process non-SVG images with optimization
 	const nonSvgImages = gulp.src(['src/images/**/*', '!src/images/**/*.svg'])
 		.pipe(imagemin())
-		.pipe(addHash()) // Добавляем хэш к имени файла
 		.pipe(gulp.dest(`${paths.dist}/images`));
 
 	// Process SVG files without optimization (copy as-is)
 	const svgImages = gulp.src('src/images/**/*.svg')
-		.pipe(addHash()) // Добавляем хэш к имени файла
 		.pipe(gulp.dest(`${paths.dist}/images`));
 
 	return Promise.all([nonSvgImages, svgImages])
