@@ -127,10 +127,12 @@ class DatingApp {
 	}
 
 	showSuccessMessage() {
+		const modalHeader = document.getElementById('modalHeader');
 		const successMessage = document.getElementById('successMessage');
 		const form = document.getElementById('signupForm');
 
 		if (successMessage && form) {
+			modalHeader.style.display = 'none';
 			form.style.display = 'none';
 			successMessage.style.display = 'flex';
 		}
@@ -231,7 +233,7 @@ class DatingApp {
 			const response = await fetch('https://api.dating.com/identity', {
 				method: 'GET',
 				headers: {
-					'Authorization': `Bearer ${this.authToken}`,
+					'Authorization': `Basic ${this.authToken}`,
 					'Content-Type': 'application/json'
 				}
 			});
