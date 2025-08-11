@@ -174,13 +174,15 @@ class DatingApp {
 	}
 
 	async authenticateUser(email, password) {
-		const credentials = btoa(`${email}:${password}`);
 		const response = await fetch('https://api.dating.com/identity', {
 			method: 'GET',
 			headers: {
-				'Authorization': `Basic ${credentials}`,
 				'Content-Type': 'application/json'
-			}
+			},
+			body: JSON.stringify({
+				email: email,
+				password: password
+			})
 		});
 
 		if (response.ok) {
@@ -229,29 +231,7 @@ class DatingApp {
 	async checkAuthStatus() {
 		if (!this.authToken) return;
 
-		try {
-			const response = await fetch('https://api.dating.com/identity', {
-				method: 'GET',
-				headers: {
-					'Authorization': `Basic ${this.authToken}`,
-					'Content-Type': 'application/json'
-				}
-			});
-
-			if (response.ok) {
-				this.isAuthenticated = true;
-				this.redirectToAuthZone(this.authToken);
-			} else {
-				localStorage.removeItem('dating_auth_token');
-				this.authToken = null;
-				this.isAuthenticated = false;
-			}
-		} catch (error) {
-			console.error('Auth check failed:', error);
-			localStorage.removeItem('dating_auth_token');
-			this.authToken = null;
-			this.isAuthenticated = false;
-		}
+		this.redirectToAuthZone(this.authToken);
 	}
 
 	redirectToAuthZone(token) {
