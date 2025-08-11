@@ -9,7 +9,6 @@ class DatingApp {
 	}
 
 	init() {
-		// Check if user is already authenticated
 		if (this.authToken) {
 			this.checkAuthStatus();
 		}
@@ -19,13 +18,10 @@ class DatingApp {
 	}
 
 	bindEvents() {
-		// Sign up button clicks
 		document.getElementById('signupBtn')?.addEventListener('click', () => this.openModal());
 
-		// Form submission
 		document.getElementById('signupForm')?.addEventListener('submit', (e) => this.handleFormSubmit(e));
 
-		// Modal close events
 		document.getElementById('modalClose')?.addEventListener('click', () => this.closeModal());
 		document.addEventListener('keydown', (e) => {
 			if (e.key === 'Escape' && this.modal?.classList.contains('active')) {
@@ -33,7 +29,6 @@ class DatingApp {
 			}
 		});
 
-		// Form input validation
 		document.getElementById('email')?.addEventListener('blur', (e) => this.validateEmail(e.target.value));
 		document.getElementById('password')?.addEventListener('blur', (e) => this.validatePassword(e.target.value));
 		document.getElementById('email')?.addEventListener('input', (e) => this.clearError('emailError'));
