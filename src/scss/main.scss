@@ -1,0 +1,384 @@
+$primary-color: linear-gradient(238.08deg, #D4208C 0.42%, #E61726 82.5%);
+$text-color: #3A3A3A;
+$background-color: white;
+
+@mixin gradient-text($gradient) {
+  background: $gradient;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+.gradient-text {
+  &--primary {
+    @include gradient-text($primary-color);
+  }
+}
+
+$mobile: 576px;
+$tablet: 768px;
+$desktop: 1024px;
+$large-desktop: 1200px;
+
+@mixin mobile {
+  @media (max-width: #{$mobile}) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (max-width: #{$tablet}) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (max-width: #{$desktop}) {
+    @content;
+  }
+}
+
+body {
+  font-family: 'Open Sans', sans-serif;
+	font-size: 17px;
+  color: $text-color;
+  background-color: $background-color;
+}
+
+.container {
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	height: 100vh;
+	gap: 40px;
+
+	@include desktop {
+		gap: 80px;
+		padding: 15px 24px;
+	}
+
+  @include tablet {
+    padding: 24px 15px;
+		flex-direction: column;
+		justify-content: start;
+		align-items: start;
+		gap: 20px;
+  }
+
+	@include mobile {
+		padding: 10px;
+		gap: 10px;
+		justify-content: start;
+	}
+
+	&-image {
+		img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+		}
+	}
+
+	&__steps {
+		&__title {
+			font-size: 77px;
+			font-weight: 800;
+			@include gradient-text($primary-color);
+
+			margin-bottom: 40px;
+
+			@include desktop {
+				font-size: 60px;
+			}
+
+			@include tablet {
+				font-size: 40px;
+			}
+
+			@include mobile {
+				font-size: 35px;
+				margin-bottom: 10px;
+			}
+		}
+
+		&__list {
+			display: flex;
+			flex-direction: column;
+			gap: 24px;
+
+			@include mobile {
+				gap: 5px;
+			}
+
+			&__item {
+				display: flex;
+				align-items: center;
+				gap: 16px;
+
+				&__number {
+					font-size: 55px;
+					font-weight: 800;
+					@include gradient-text($primary-color);
+
+					@include desktop {
+						font-size: 45px;
+					}
+
+					@include mobile {
+						font-size: 33px;
+					}
+				}
+
+				&__title {
+					font-size: 38px;
+					font-weight: 600;
+					color: $text-color;
+					width: 100%;
+
+					@include desktop {
+						font-size: 30px;
+					}
+
+					@include mobile {
+						font-size: 19px;
+					}
+				}
+			}
+		}
+	}
+}
+
+.btn {
+	box-sizing: border-box;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+	font-size: 23px;
+  font-weight: 800;
+  text-decoration: none;
+	text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+	min-height: 81px;
+	max-width: 387px;
+	width: 100%;
+
+	@include tablet {
+		font-size: 19px;
+		min-height: 60px;
+		max-width: 168px;
+	}
+
+	@include mobile {
+		font-size: 14px;
+		min-height: 50px;
+		max-width: 168px;
+	}
+
+  &--primary {
+    background: $primary-color;
+    color: white;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(212, 32, 140, 0.3);
+    }
+  }
+
+  &--full {
+		max-width: 100%;
+  }
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+
+  &.active {
+    display: block;
+  }
+
+  &__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.8);
+		backdrop-filter: blur(15px)
+  }
+
+  &__content {
+    position: relative;
+    background: white;
+    margin: 50px auto;
+    padding: 45px;
+    border-radius: 50px;
+    max-width: 1200px;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+
+		@include desktop {
+			margin: 50px 20px;
+		}
+
+		@include mobile {
+			padding: 72px 15px;
+			border-radius: 20px;
+		}
+  }
+
+  &__close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 45px;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+
+		@include gradient-text($primary-color);
+
+    &:hover {
+      transform: scale(1.1);
+    }
+
+		@include mobile {
+			top: 10px;
+			right: 10px;
+			width: 30px;
+			height: 30px;
+		}
+  }
+
+  &__header {
+    text-align: center;
+    margin-bottom: 30px;
+
+    .modal__title {
+      font-size: 24px;
+			font-weight: 700;
+      margin-bottom: 30px;
+
+			@include desktop {
+				font-size: 22px;
+			}
+
+			@include tablet {
+				font-size: 18px;
+			}
+
+			@include mobile {
+				font-size: 17px;
+			}
+    }
+  }
+}
+
+.signup-form {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 20px;
+
+  .form__group {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 10px;
+		width: 100%;
+
+    .form__input {
+			box-sizing: border-box;
+      width: 100%;
+      padding: 12px;
+			border: none;
+      border-bottom: 1px solid rgba(58, 58, 58, 1);
+      font-size: 18px;
+			font-weight: 400;
+      transition: border-color 0.3s ease;
+			outline: none;
+
+			&::placeholder {
+				text-align: center;
+				color: rgba(179, 179, 179, 1);
+			}
+
+			@include mobile {
+				font-size: 14px;
+			}
+
+      &:focus {
+        outline: none;
+				border: none;
+				border-bottom: 1px solid rgba(58, 58, 58, 1);
+      }
+
+      &.error {
+				outline: none;
+				border: none;
+				border-bottom: 1px solid #e74c3c;
+      }
+    }
+
+    .form__error {
+      color: #e74c3c;
+      font-size: 14px;
+      margin-top: 5px;
+      min-height: 20px;
+    }
+  }
+}
+
+.success-message {
+  display: none;
+  text-align: center;
+  padding: 20px;
+
+  .success__title {
+    font-size: 77px;
+    margin-bottom: 20px;
+    @include gradient-text($primary-color);
+
+		@include desktop {
+			font-size: 60px;
+		}
+
+		@include tablet {
+			font-size: 40px;
+		}
+
+		@include mobile {
+			font-size: 35px;
+		}
+  }
+
+  .success__text {
+    color: rgba(58, 58, 58, 1);
+		font-size: 28px;
+		font-weight: 700;
+
+		@include desktop {
+			font-size: 24px;
+		}
+
+		@include tablet {
+			font-size: 18px;
+		}
+
+		@include mobile {
+			font-size: 14px;
+		}
+  }
+}

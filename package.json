@@ -1,25 +1,35 @@
 {
-	"name": "SDVentures",
+	"name": "dating-landing-page",
 	"version": "1.0.0",
-	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"dev": "gulp dev",
+		"build": "gulp build",
+		"clean": "gulp clean",
+		"serve": "gulp serve"
 	},
-	"keywords": [],
-	"author": "",
-	"license": "ISC",
+	"keywords": [
+		"dating",
+		"landing-page",
+		"responsive",
+		"gulp",
+		"scss",
+		"javascript"
+	],
+	"author": "Anton Krasilnikov",
+	"license": "MIT",
 	"devDependencies": {
-		"browser-sync": "^3.0.4",
-		"del": "^8.0.0",
-		"gulp": "^5.0.1",
-		"gulp-autoprefixer": "^9.0.0",
+		"browser-sync": "^2.29.3",
+		"del": "^6.1.1",
+		"gulp": "^4.0.2",
+		"gulp-autoprefixer": "^8.0.0",
 		"gulp-clean-css": "^4.3.0",
 		"gulp-htmlmin": "^5.0.1",
-		"gulp-imagemin": "^9.1.0",
-		"gulp-rename": "^2.1.0",
-		"gulp-sass": "^6.0.1",
+		"gulp-imagemin": "^7.1.0",
+		"gulp-rename": "^2.0.0",
+		"gulp-sass": "^5.1.0",
 		"gulp-sourcemaps": "^3.0.0",
-		"gulp-uglify": "^3.0.2"
+		"gulp-uglify": "^3.0.2",
+		"sass": "^1.69.0"
 	}
 }

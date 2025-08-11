@@ -62,10 +62,17 @@ function js() {
 
 // Images task
 function images() {
-	return gulp.src(paths.src.images)
+	// Process non-SVG images with optimization
+	const nonSvgImages = gulp.src(['src/images/**/*', '!src/images/**/*.svg'])
 		.pipe(imagemin())
-		.pipe(gulp.dest(`${paths.dist}/images`))
-		.pipe(browserSync.stream());
+		.pipe(gulp.dest(`${paths.dist}/images`));
+
+	// Process SVG files without optimization (copy as-is)
+	const svgImages = gulp.src('src/images/**/*.svg')
+		.pipe(gulp.dest(`${paths.dist}/images`));
+
+	return Promise.all([nonSvgImages, svgImages])
+		.then(() => browserSync.stream());
 }
 
 // Fonts task
