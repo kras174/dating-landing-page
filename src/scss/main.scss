@@ -268,6 +268,7 @@ body {
 	}
 
 	&__header {
+		display: block;
 		text-align: center;
 		margin-bottom: 30px;
 
@@ -348,8 +349,10 @@ body {
 
 .success-message {
 	display: none;
+
+	flex-direction: column;
 	text-align: center;
-	padding: 20px;
+	padding: 100px;
 
 	.success__title {
 		font-size: 77px;
