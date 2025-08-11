@@ -9,6 +9,8 @@ const browserSync = require('browser-sync').create();
 const imagemin = require('gulp-imagemin');
 const htmlmin = require('gulp-htmlmin');
 const del = require('del');
+const crypto = require('crypto');
+const through2 = require('through2');
 
 // File paths
 const paths = {
@@ -25,12 +27,88 @@ const paths = {
 
 // Clean dist folder
 function clean() {
+	fileManifest = {}; // Сбрасываем манифест
 	return del([paths.dist]);
+}
+
+// Функция для генерации хэша
+function generateHash() {
+	return crypto.randomBytes(4).toString('hex');
+}
+
+// Создаем манифест для хэшированных файлов
+let fileManifest = {};
+
+// Функция для добавления хэша к имени файла и записи в манифест
+function addHash() {
+	return through2.obj(function (file, enc, cb) {
+		if (file.isBuffer()) {
+			const hash = generateHash();
+			const ext = file.extname;
+			const name = file.stem;
+			const originalName = `${name}${ext}`;
+			const hashedName = `${name}.${hash}${ext}`;
+
+			// Записываем в манифест
+			fileManifest[originalName] = hashedName;
+
+			// Также записываем версию без расширения для совместимости
+			fileManifest[name] = hashedName;
+
+			file.basename = `${name}.${hash}${ext}`;
+		}
+		cb(null, file);
+	});
+}
+
+// Функция для обновления ссылок в HTML
+function updateHtmlReferences() {
+	return through2.obj(function (file, enc, cb) {
+		if (file.isBuffer()) {
+			let content = file.contents.toString();
+
+			// Обновляем ссылки на CSS файлы
+			content = content.replace(
+				/href="css\/([^"]+)"/g,
+				(match, filename) => {
+					const hashedName = fileManifest[filename];
+					return hashedName ? `href="css/${hashedName}"` : match;
+				}
+			);
+
+			// Обновляем ссылки на JS файлы
+			content = content.replace(
+				/src="js\/([^"]+)"/g,
+				(match, filename) => {
+					const hashedName = fileManifest[filename];
+					return hashedName ? `src="js/${hashedName}"` : match;
+				}
+			);
+
+			// Обновляем ссылки на изображения
+			content = content.replace(
+				/src="images\/([^"]+)"/g,
+				(match, filename) => {
+					// Ищем хэшированное имя для изображения
+					const hashedName = fileManifest[filename];
+					if (hashedName) {
+						return `src="images/${hashedName}"`;
+					}
+					// Если не найдено, оставляем как есть
+					return match;
+				}
+			);
+
+			file.contents = Buffer.from(content);
+		}
+		cb(null, file);
+	});
 }
 
 // HTML task
 function html() {
 	return gulp.src(paths.src.html)
+		.pipe(updateHtmlReferences()) // Обновляем ссылки на хэшированные файлы
 		.pipe(htmlmin({ collapseWhitespace: true }))
 		.pipe(gulp.dest(paths.dist))
 		.pipe(browserSync.stream());
@@ -44,6 +122,7 @@ function css() {
 		.pipe(autoprefixer())
 		.pipe(cleanCSS())
 		.pipe(rename({ suffix: '.min' }))
+		.pipe(addHash()) // Добавляем хэш к имени файла
 		.pipe(sourcemaps.write('.'))
 		.pipe(gulp.dest(`${paths.dist}/css`))
 		.pipe(browserSync.stream());
@@ -55,6 +134,7 @@ function js() {
 		.pipe(sourcemaps.init())
 		.pipe(uglify())
 		.pipe(rename({ suffix: '.min' }))
+		.pipe(addHash()) // Добавляем хэш к имени файла
 		.pipe(sourcemaps.write('.'))
 		.pipe(gulp.dest(`${paths.dist}/js`))
 		.pipe(browserSync.stream());
@@ -65,10 +145,12 @@ function images() {
 	// Process non-SVG images with optimization
 	const nonSvgImages = gulp.src(['src/images/**/*', '!src/images/**/*.svg'])
 		.pipe(imagemin())
+		.pipe(addHash()) // Добавляем хэш к имени файла
 		.pipe(gulp.dest(`${paths.dist}/images`));
 
 	// Process SVG files without optimization (copy as-is)
 	const svgImages = gulp.src('src/images/**/*.svg')
+		.pipe(addHash()) // Добавляем хэш к имени файла
 		.pipe(gulp.dest(`${paths.dist}/images`));
 
 	return Promise.all([nonSvgImages, svgImages])
@@ -104,7 +186,7 @@ function serve() {
 }
 
 // Build task
-const build = gulp.series(clean, gulp.parallel(html, css, js, images, fonts));
+const build = gulp.series(clean, gulp.parallel(css, js, images, fonts), html);
 
 // Dev task
 const dev = gulp.series(build, gulp.parallel(watchFiles, serve));
